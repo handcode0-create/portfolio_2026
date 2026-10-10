@@ -165,4 +165,28 @@ export const projects: Project[] = [
     image: "/portfolio-bg/hero.webp",
     imagePosition: "center",
   },
+  {
+    slug: "handcode-academy",
+    name: "handCode Academy",
+    category: "Learning platform",
+    description: "Plateforme de suivi du programme de formation développeur intensif de 30 jours de handCode Academy.",
+    story: [
+      "handCode Academy accompagne un programme de formation développeur intensif de 30 jours. La plateforme donne à chaque apprenant son espace de suivi, et à l'équipe un espace d'administration pour gérer les inscrits.",
+      "Le programme avance jour par jour : le contenu d'une journée est ouvert à minuit pour la suivante, ce qui cadre le rythme de l'apprenant. La page d'accueil s'appuie sur une scène 3D animée pour présenter le programme, certificats de réussite compris.",
+      "L'application est un front React et Vite, avec Firebase pour l'authentification et les données, et un petit serveur Express qui appelle l'API Gemini côté serveur.",
+    ],
+    features: [
+      { title: "Espace apprenant", text: "Un tableau de bord personnel pour suivre sa progression dans le programme." },
+      { title: "Espace administrateur", text: "Gestion des inscrits : ajout, mise à jour et suppression, avec données stockées dans Firestore." },
+      { title: "Déverrouillage quotidien", text: "Chaque jour à minuit, la journée suivante du curriculum devient disponible." },
+      { title: "Certificats de réussite", text: "Une certification handCode délivrée à la fin du parcours." },
+      { title: "Scène 3D", text: "Une scène interactive créée avec Three.js et React Three Fiber." },
+      { title: "IA côté serveur", text: "Les appels à l'API Gemini passent par le serveur, jamais par le navigateur." },
+    ],
+    stack: ["React", "Vite", "Firebase"],
+    status: "En développement",
+    accent: "#F5C542",
+    image: "/portfolio-bg/hero.webp",
+    imagePosition: "center",
+  },
 ];
