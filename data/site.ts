@@ -7,7 +7,7 @@ const whatsapp = "2250160706221"; // format international, sans « + » ni espac
 
 export const site = {
   name: "HANCODE",
-  owner: { name: "Smith Junior", role: "Fondateur de handCode Corp" },
+  owner: { name: "Smith Junior", role: "Fondateur de HANCODE STUDIO" },
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfolio-2026-fawn-theta.vercel.app",
   title: "HANCODE — Digital Products",
   description:
