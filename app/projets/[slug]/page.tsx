@@ -98,6 +98,33 @@ export default async function ProjectPage({ params }: Params) {
         </div>
       </div>
 
+      <section aria-labelledby="projet-title" className="container-page mt-24 md:mt-36">
+        <div className="grid gap-12 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <h2 id="projet-title" className="eyebrow">
+              <span className="node" aria-hidden /> Le projet
+            </h2>
+          </div>
+          <div className="space-y-6 md:col-span-7">
+            {project.story.map((paragraph) => (
+              <p key={paragraph} className="text-lg leading-8 text-paper-dim first:text-xl first:text-paper md:first:text-2xl md:first:leading-10">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <RevealGroup className="mt-16 border-t border-line">
+          {project.features.map((feature, i) => (
+            <RevealItem key={feature.title} className="grid gap-3 border-b border-line py-7 md:grid-cols-12 md:gap-10">
+              <span className="font-display text-micro uppercase text-orange md:col-span-1 md:pt-2">{String(i + 1).padStart(2, "0")}</span>
+              <h3 className="font-display text-display-md font-semibold md:col-span-4">{feature.title}</h3>
+              <p className="leading-7 text-paper-dim md:col-span-6 md:col-start-7">{feature.text}</p>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+      </section>
+
       {media.screens.length > 0 && (
         <section aria-labelledby="apercu-title" className="container-page mt-24 md:mt-36">
           <h2 id="apercu-title" className="eyebrow">

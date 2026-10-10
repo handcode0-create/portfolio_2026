@@ -12,6 +12,7 @@ export type ProjectRow = {
   index: string;
   name: string;
   category: string;
+  description: string;
   status: string;
   stack: string[];
   accent: string;
@@ -139,7 +140,8 @@ export function ProjectsIndex({ rows }: { rows: ProjectRow[] }) {
                     <h3 className="font-display text-display-xl font-semibold transition-[transform,color] duration-500 ease-[cubic-bezier(.2,0,0,1)] can-hover:group-hover:translate-x-3 can-hover:group-hover:text-orange">
                       {row.name}
                     </h3>
-                    <p className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-micro uppercase text-paper-faint">
+                    <p className="mt-3 max-w-2xl text-base leading-7 text-paper-dim">{row.description}</p>
+                    <p className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-micro uppercase text-paper-faint">
                       <span className="inline-flex items-center gap-2">
                         <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: row.accent }} />
                         {row.category}

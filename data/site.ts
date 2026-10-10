@@ -47,7 +47,7 @@ export const approach = [
 /** Technologies réellement présentes dans les projets (data/projects.ts). */
 export const stackGroups = [
   { title: "Front-end", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Vite"] },
-  { title: "Back-end & données", items: ["Laravel", "Inertia", "PostgreSQL"] },
+  { title: "Back-end & données", items: ["Laravel", "Inertia", "PostgreSQL", "Supabase"] },
   { title: "Mobile", items: ["React Native"] },
 ] as const;
 

@@ -10,6 +10,7 @@ export function Projects() {
     index: String(i + 1).padStart(2, "0"),
     name: project.name,
     category: project.category,
+    description: project.description,
     status: project.status,
     stack: project.stack,
     accent: project.accent,
