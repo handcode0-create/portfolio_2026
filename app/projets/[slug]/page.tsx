@@ -82,6 +82,17 @@ export default async function ProjectPage({ params }: Params) {
             <dd className="mt-3 font-display text-display-md">{project.stack.join(" · ")}</dd>
           </div>
         </dl>
+
+        {project.repo && (
+          <a
+            href={project.repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="reveal reveal-delay-3 btn btn-ghost mt-10"
+          >
+            Voir le code sur GitHub <ArrowUpRight size={16} aria-hidden />
+          </a>
+        )}
       </header>
 
       <div className="container-page mt-14">
