@@ -1,8 +1,19 @@
-import {ArrowUpRight,Github,Mail,MessageCircle} from "lucide-react";
-import {Reveal,RevealGroup,RevealItem,ScrollProgress} from "@/components/Motion";
-import {Navbar} from "@/components/Navbar";import {Hero} from "@/components/Hero";import {ProjectCard} from "@/components/ProjectCard";import {projects} from "@/data/projects";
-export default function Home(){return <main className="overflow-hidden"><ScrollProgress/><Navbar/><Hero/>
-<section id="projets" className="relative scroll-mt-24 overflow-hidden py-20 md:py-28"><div className="absolute inset-0 bg-[url('/portfolio-bg/workspace.webp')] bg-cover bg-center opacity-10"/><div className="container-page relative"><Reveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><div className="mb-3 text-xs font-bold uppercase tracking-[.2em] text-orange">Selected work</div><h2 className="max-w-2xl text-4xl font-bold tracking-tight md:text-5xl">Des applications réelles pour des besoins <span className="text-orange">réels.</span></h2></div><p className="max-w-sm text-sm leading-6 text-white/45">Une sélection de produits conçus, développés ou prototypés avec une approche centrée sur l'expérience utilisateur.</p></Reveal><RevealGroup className="mt-10 grid gap-5 md:grid-cols-2" stagger={.1}>{projects.map(project=><RevealItem key={project.slug}><ProjectCard project={project}/></RevealItem>)}</RevealGroup></div></section>
-<section id="a-propos" className="relative scroll-mt-24 overflow-hidden py-20 md:py-28"><div className="absolute inset-0 bg-[url('/portfolio-bg/hero.webp')] bg-cover bg-center opacity-10"/><div className="container-page relative"><div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr]"><Reveal><div className="text-xs font-bold uppercase tracking-[.2em] text-orange">Qui suis-je ?</div><h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">Je construis des produits, pas seulement du code.</h2><div className="relative mt-8 aspect-[4/5] max-w-sm overflow-hidden rounded-3xl border border-white/10 bg-[#101010]"><img src="/about/me.webp" alt="Portrait du fondateur de HANCODE" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" style={{objectPosition:"center 25%"}}/><div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"/></div></Reveal><Reveal delay={.1} className="glass rounded-3xl p-6 transition duration-500 hover:border-white/20 md:p-8"><p className="text-lg leading-8 text-white/65">Je développe des expériences numériques modernes en combinant produit, design et ingénierie. Mon objectif est de transformer une idée en interface claire, performante et réellement utilisable.</p><RevealGroup className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4" stagger={.05}>{["Laravel","React","Next.js","TypeScript","Inertia","PostgreSQL","Tailwind","Vite"].map(tech=><RevealItem key={tech} className="rounded-xl border border-white/10 px-3 py-3 text-center text-xs text-white/55 transition hover:border-orange/40 hover:text-white">{tech}</RevealItem>)}</RevealGroup></Reveal></div></div></section>
-<section id="contact" className="container-page scroll-mt-24 pb-20 pt-12 md:pb-28"><Reveal className="relative overflow-hidden rounded-[2rem] border border-orange/20 bg-[#0c0c0c] p-6 md:p-10"><div className="absolute inset-0 bg-[url('/portfolio-bg/devices.webp')] bg-cover bg-center opacity-10"/><div className="pulse-glow absolute -right-20 -top-20 h-60 w-60 rounded-full bg-orange/15 blur-[80px]"/><div className="relative"><div className="text-xs font-bold uppercase tracking-[.2em] text-orange">Discutons</div><h2 className="mt-3 max-w-2xl text-4xl font-bold tracking-tight md:text-6xl">Un projet en tête ? Construisons-le.</h2><p className="mt-5 max-w-xl text-white/50">Disponible pour de nouveaux produits, collaborations et missions freelance.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href="mailto:contact@hancode.dev" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-orange px-5 py-3.5 text-sm font-bold text-black transition hover:-translate-y-0.5"><Mail size={17}/>Email</a><a href="https://wa.me/" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 py-3.5 text-sm font-semibold transition hover:bg-white/5"><MessageCircle size={17}/>WhatsApp</a><a href="https://github.com/handcode0-create" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 py-3.5 text-sm font-semibold transition hover:bg-white/5"><Github size={17}/>GitHub</a></div></div></Reveal></section>
-<footer className="container-page flex flex-col gap-3 border-t border-white/10 py-7 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 HANCODE. Tous droits réservés.</span><a href="#projets" className="inline-flex items-center gap-1 hover:text-white">Retour aux projets <ArrowUpRight size={13}/></a></footer></main>}
+import { About } from "@/components/sections/About";
+import { Contact } from "@/components/sections/Contact";
+import { Hero } from "@/components/sections/Hero";
+import { Manifesto } from "@/components/sections/Manifesto";
+import { Marquee } from "@/components/sections/Marquee";
+import { Projects } from "@/components/sections/Projects";
+
+export default function HomePage() {
+  return (
+    <>
+      <Hero />
+      <Marquee />
+      <Manifesto />
+      <Projects />
+      <About />
+      <Contact />
+    </>
+  );
+}

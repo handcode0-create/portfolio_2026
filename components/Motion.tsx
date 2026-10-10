@@ -1,25 +1,23 @@
 "use client";
 
+/**
+ * Primitives Framer Motion (« motion/react »).
+ * Propriétaire d'animation : Framer Motion — apparitions de contenu, micro-interactions.
+ * Les scènes pilotées par le scroll (hero, manifeste, portrait) appartiennent à GSAP.
+ */
 import {
-  AnimatePresence,
   LazyMotion,
   MotionConfig,
   domAnimation,
   m,
-  useReducedMotion,
   useScroll,
   useSpring,
-  useTransform,
   type Variants,
 } from "motion/react";
-import { useRef, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import { DUR, EASE, STAGGER } from "@/lib/animation/tokens";
 
-const EASE = [0.2, 0.75, 0.25, 1] as const;
-
-/**
- * Charge uniquement le sous-ensemble domAnimation (léger) et respecte
- * prefers-reduced-motion : les animations de transform sont désactivées.
- */
+/** Charge le sous-ensemble domAnimation et respecte prefers-reduced-motion. */
 export function MotionProvider({ children }: { children: ReactNode }) {
   return (
     <MotionConfig reducedMotion="user">
@@ -30,22 +28,17 @@ export function MotionProvider({ children }: { children: ReactNode }) {
   );
 }
 
-type RevealProps = {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-  y?: number;
-};
+type RevealProps = { children: ReactNode; className?: string; delay?: number; y?: number };
 
-/** Apparition au scroll (une seule fois). */
-export function Reveal({ children, className, delay = 0, y = 24 }: RevealProps) {
+/** Apparition au scroll, une seule fois. */
+export function Reveal({ children, className, delay = 0, y = 28 }: RevealProps) {
   return (
     <m.div
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -80px 0px" }}
-      transition={{ duration: 0.7, ease: EASE, delay }}
+      transition={{ duration: DUR.slow, ease: EASE.emphasized, delay }}
     >
       {children}
     </m.div>
@@ -58,15 +51,15 @@ const groupVariants = (stagger: number): Variants => ({
 });
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE } },
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: DUR.slow, ease: EASE.emphasized } },
 };
 
-/** Conteneur : fait apparaître ses RevealItem l'un après l'autre. */
+/** Conteneur : révèle ses RevealItem l'un après l'autre. */
 export function RevealGroup({
   children,
   className,
-  stagger = 0.08,
+  stagger = STAGGER.md,
 }: {
   children: ReactNode;
   className?: string;
@@ -85,13 +78,7 @@ export function RevealGroup({
   );
 }
 
-export function RevealItem({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function RevealItem({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <m.div className={className} variants={itemVariants}>
       {children}
@@ -99,14 +86,10 @@ export function RevealItem({
   );
 }
 
-/** Fine barre orange en haut de page qui suit la progression du scroll. */
+/** Fine barre orange en haut de page : progression du scroll. */
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 30,
-    restDelta: 0.001,
-  });
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
   return (
     <m.div
       aria-hidden
@@ -115,29 +98,3 @@ export function ScrollProgress() {
     />
   );
 }
-
-/** Léger décalage vertical au scroll (désactivé si reduced-motion). */
-export function Parallax({
-  children,
-  className,
-  distance = 36,
-}: {
-  children: ReactNode;
-  className?: string;
-  distance?: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [distance, -distance]);
-  return (
-    <m.div ref={ref} style={reduce ? undefined : { y }} className={className}>
-      {children}
-    </m.div>
-  );
-}
-
-export { AnimatePresence, m };

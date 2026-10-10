@@ -17,7 +17,7 @@ Chaque projet a sa carte sur l'accueil et sa page détaillée (`/projets/<slug>`
 | Framework | Next.js 15 (App Router), React 19 |
 | Langage | TypeScript |
 | Style | Tailwind CSS 3, polices DM Sans et Space Grotesk |
-| Animations | Framer Motion (package `motion`, chargement allégé via `LazyMotion`) |
+| Animations | GSAP + ScrollTrigger (`gsap`, `@gsap/react`), Motion for React (`motion`, via `LazyMotion`) |
 | Icônes | Lucide React |
 
 ## Démarrer
@@ -33,18 +33,23 @@ npm run start    # sert le build
 
 ```
 app/
-  layout.tsx               # métadonnées, MotionProvider
-  page.tsx                 # accueil : hero, projets, à propos, contact
-  projets/[slug]/page.tsx  # page détaillée d'un projet
+  layout.tsx               # polices, métadonnées, navbar, footer, MotionProvider
+  page.tsx                 # accueil : Hero, Marquee, Manifesto, Projects, About, Contact
+  projets/[slug]/page.tsx  # page éditoriale d'un projet
+  not-found.tsx            # 404
 components/
-  Hero.tsx  Navbar.tsx  ProjectCard.tsx
-  Motion.tsx               # Reveal, RevealGroup/Item, ScrollProgress, Parallax
-data/projects.ts           # liste des projets (source unique)
+  sections/                # Hero, Manifesto, Projects(Index), About, Contact (+ *Motion = îlots GSAP)
+  navigation/              # Navbar (menu plein écran), Footer
+  effects/                 # MagneticLink, AbidjanClock
+  Motion.tsx               # Reveal, RevealGroup/Item, ScrollProgress (Framer Motion)
+lib/animation/             # tokens de motion, setup GSAP + ScrollTrigger
 lib/project-media.ts       # détection des captures réelles
+data/site.ts               # contenus et contacts du site (email, WhatsApp, GitHub)
+data/projects.ts           # liste des projets (source unique)
 public/
   projects/<slug>/         # captures réelles de chaque projet
   portfolio-bg/            # fonds du site (hero, devices, workspace)
-  about/me.webp            # photo de la section « Qui suis-je ? »
+  about/me.webp            # portrait de la section À propos
 ```
 
 ## Ajouter ou modifier un projet
@@ -81,15 +86,30 @@ Aucun code à modifier : `lib/project-media.ts` détecte les fichiers au build e
 
 Conseils : format 16:10, `.webp`, 1600 px de large maximum, moins de 200 Ko par image pour rester léger sur mobile.
 
-## Animations
+## Direction artistique et animations
 
-- Apparition au scroll (`Reveal`, `RevealGroup`/`RevealItem`) jouée une seule fois.
-- Barre de progression du scroll, parallaxe légère sur le hero, menu mobile animé.
-- Hero animé en CSS pur pour un premier affichage sans JavaScript.
-- `prefers-reduced-motion` respecté : les animations de mouvement sont désactivées.
+Concept « Signal » : des produits envoyés depuis Abidjan (point orange, coordonnées, heure locale). Noir `#0B0B0B`, orange `#FF6A00`, blanc cassé, Space Grotesk + DM Sans.
+
+Un seul propriétaire d'animation par propriété :
+
+- **GSAP + ScrollTrigger** : intro du hero, parallaxe, révélation du manifeste mot à mot, masque du portrait, aperçu qui suit le curseur dans l'index des projets.
+- **Framer Motion** : navbar (masquage au scroll), menu plein écran, apparitions au scroll, liens magnétiques, barre de progression.
+- **CSS** : survols, bandeau défilant, pulsation du point.
+
+Accessibilité et performance : `prefers-reduced-motion` supprime les mouvements (contenu final affiché directement), contenu lisible sans JS, interactions souris limitées aux appareils `hover: hover`, focus clavier visible, lien d'évitement, animation de `transform`/`opacity` uniquement.
+
+Le contenu d'accueil est rendu côté serveur ; seuls les îlots d'animation sont des composants client.
+
+## Qualité
+
+```bash
+npx tsc --noEmit   # types
+npm run lint       # ESLint (flat config, next/core-web-vitals)
+npm run build
+```
 
 ## Prochaines étapes
 
 - Remplacer tous les placeholders par les captures réelles.
-- Brancher les vrais liens de contact (email, WhatsApp).
+- Vérifier les liens de contact dans `data/site.ts` (email, WhatsApp).
 - Ajouter une image Open Graph pour le partage des liens.

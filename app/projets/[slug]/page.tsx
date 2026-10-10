@@ -1,22 +1,155 @@
-import {ArrowLeft,ArrowUpRight,CheckCircle2} from "lucide-react";
-import {notFound} from "next/navigation";
-import {projects} from "@/data/projects";
-import {getProjectMedia} from "@/lib/project-media";
-import {Reveal,RevealGroup,RevealItem,ScrollProgress} from "@/components/Motion";
-export function generateStaticParams(){return projects.map(project=>({slug:project.slug}));}
-export default async function ProjectPage({params}:{params:Promise<{slug:string}>}){
- const {slug}=await params; const project=projects.find(item=>item.slug===slug); if(!project) notFound();
- const media=getProjectMedia(project);
- const shotClass=media.hasRealMedia?"opacity-100":"opacity-70";
- return <main className="min-h-screen overflow-hidden"><ScrollProgress/><header className="container-page flex items-center justify-between py-5"><a href="/#projets" className="inline-flex items-center gap-2 text-sm text-white/55 hover:text-white"><ArrowLeft size={16}/>Tous les projets</a><span className="text-sm font-bold tracking-tight">HANCODE</span></header>
- <section className="container-page py-12 md:py-20"><div className="grid items-center gap-10 lg:grid-cols-[.9fr_1.1fr]"><div className="reveal"><div className="mb-4 inline-flex rounded-full border border-white/10 bg-white/[.03] px-3 py-1 text-xs text-white/55">{project.category}</div><h1 className="text-5xl font-bold tracking-[-.04em] md:text-7xl">{project.name}</h1><p className="mt-6 max-w-xl text-base leading-7 text-white/55 md:text-lg">{project.description}</p><div className="mt-7 flex flex-wrap gap-2">{project.stack.map(tech=><span key={tech} className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/55">{tech}</span>)}</div><div className="mt-8 flex flex-wrap gap-3"><a href="#aperçu" className="inline-flex items-center gap-2 rounded-2xl bg-orange px-5 py-3.5 text-sm font-bold text-black">Explorer le projet <ArrowUpRight size={16}/></a></div></div>
- <div className="reveal reveal-delay-2 relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-white/10 bg-[#090909]"><img src={media.hero} alt={project.name+" — présentation"} decoding="async" style={{objectPosition:project.imagePosition||"center"}} className={"absolute inset-0 h-full w-full object-cover "+(media.hasRealMedia?"opacity-100":"opacity-75")}/><div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10"/><div className="absolute bottom-5 left-5 rounded-2xl border border-white/10 bg-black/55 px-4 py-3 backdrop-blur"><div className="text-xs text-orange">CASE STUDY</div><div className="mt-1 text-sm font-semibold">{project.name}</div></div></div></div></section>
- <section id="aperçu" className="container-page scroll-mt-8 border-t border-white/10 py-16 md:py-24"><div className="grid gap-8 lg:grid-cols-[.65fr_1.35fr]"><Reveal><div className="text-xs font-bold uppercase tracking-[.2em] text-orange">Aperçu du projet</div><h2 className="mt-3 text-3xl font-bold md:text-4xl">L'expérience, écran par écran.</h2></Reveal><div><Reveal delay={.08}><p className="leading-7 text-white/55">Une sélection de visuels et de directions produit pour présenter l'expérience dans son contexte.</p></Reveal>
- <RevealGroup className="mt-8 grid gap-4 md:grid-cols-2">{media.screens.length>0
-  ? media.screens.map((src,index)=><RevealItem key={src} className={"relative aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 bg-[#101010] "+(index===0&&media.screens.length%2===1?"md:col-span-2":"")}><img src={src} alt={project.name+" — écran "+(index+1)} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover"/></RevealItem>)
-  : <>
-   <RevealItem className="relative aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 bg-[#101010] md:col-span-2"><img src={media.hero} alt={project.name+" — visuel principal"} loading="lazy" decoding="async" className={"absolute inset-0 h-full w-full object-cover "+shotClass}/><div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"/></RevealItem>
-   {[1,2].map(index=><RevealItem key={index} className="relative aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 bg-[#101010]"><img src={media.hero} alt={project.name+" — détail "+index} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover opacity-55"/><div className="absolute inset-0 bg-black/30"/></RevealItem>)}
-  </>}</RevealGroup></div></div></section>
- <section className="container-page border-t border-white/10 py-16 md:py-24"><RevealGroup className="grid gap-5 md:grid-cols-3">{["Produit","UX / UI","Technologie"].map((title,index)=><RevealItem key={title} className="rounded-3xl border border-white/10 bg-white/[.02] p-6"><CheckCircle2 size={18} className="text-orange"/><h3 className="mt-5 text-lg font-bold">{title}</h3><p className="mt-2 text-sm leading-6 text-white/45">{index===0?"Conception orientée besoins réels et usages locaux.":index===1?"Interface claire, responsive et pensée mobile-first.":"Architecture moderne avec une stack adaptée au produit."}</p></RevealItem>)}</RevealGroup></section><footer className="container-page border-t border-white/10 py-8 text-xs text-white/35">© 2026 HANCODE</footer></main>
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { RevealGroup, RevealItem } from "@/components/Motion";
+import { projects } from "@/data/projects";
+import { getProjectMedia } from "@/lib/project-media";
+
+type Params = { params: Promise<{ slug: string }> };
+
+export function generateStaticParams() {
+  return projects.map((project) => ({ slug: project.slug }));
+}
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { slug } = await params;
+  const project = projects.find((item) => item.slug === slug);
+  if (!project) return {};
+  const media = getProjectMedia(project);
+  return {
+    title: project.name,
+    description: project.description,
+    openGraph: {
+      title: `${project.name} — HANCODE`,
+      description: project.description,
+      images: [{ url: media.hero, width: 1280, height: 800, alt: `${project.name} — aperçu des interfaces` }],
+    },
+  };
+}
+
+// Compositions asymétriques de la galerie (alternance de largeurs et de décalages)
+const galleryLayout = [
+  "md:col-span-7",
+  "md:col-span-5 md:mt-24",
+  "md:col-span-5",
+  "md:col-span-7 md:mt-24",
+];
+
+export default async function ProjectPage({ params }: Params) {
+  const { slug } = await params;
+  const position = projects.findIndex((item) => item.slug === slug);
+  if (position === -1) notFound();
+
+  const project = projects[position];
+  const next = projects[(position + 1) % projects.length];
+  const media = getProjectMedia(project);
+  const nextMedia = getProjectMedia(next);
+
+  return (
+    <article>
+      <header className="container-page pt-28 md:pt-40">
+        <div className="reveal flex items-center justify-between gap-6">
+          <Link href="/#projets" className="u-link inline-flex items-center gap-2 font-display text-sm text-paper-dim hover:text-paper">
+            <ArrowLeft size={16} aria-hidden /> Tous les projets
+          </Link>
+          <span className="eyebrow">
+            {String(position + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
+          </span>
+        </div>
+
+        <p className="reveal reveal-delay-1 eyebrow mt-14 md:mt-20">
+          <span className="node" aria-hidden /> {project.category}
+        </p>
+        <h1 className="reveal reveal-delay-1 mt-6 font-display text-display-2xl font-semibold">{project.name}</h1>
+        <p className="reveal reveal-delay-2 mt-8 max-w-2xl text-lg leading-8 text-paper-dim">{project.description}</p>
+
+        <dl className="reveal reveal-delay-3 mt-12 grid gap-8 border-t border-line pt-6 sm:grid-cols-3">
+          <div>
+            <dt className="eyebrow">Statut</dt>
+            <dd className="mt-3 flex items-center gap-3 font-display text-display-md">
+              <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ background: project.accent }} />
+              {project.status}
+            </dd>
+          </div>
+          <div>
+            <dt className="eyebrow">Catégorie</dt>
+            <dd className="mt-3 font-display text-display-md">{project.category}</dd>
+          </div>
+          <div>
+            <dt className="eyebrow">Stack</dt>
+            <dd className="mt-3 font-display text-display-md">{project.stack.join(" · ")}</dd>
+          </div>
+        </dl>
+      </header>
+
+      <div className="container-page mt-14">
+        <div className="reveal reveal-delay-3 relative aspect-[16/10] overflow-hidden rounded-lg border border-line bg-ink-2">
+          <Image
+            src={media.hero}
+            alt={`${project.name} — aperçu des interfaces`}
+            fill
+            priority
+            sizes="(min-width: 1320px) 1320px, 100vw"
+            className="object-cover"
+            style={{ objectPosition: project.imagePosition ?? "center" }}
+          />
+        </div>
+      </div>
+
+      {media.screens.length > 0 && (
+        <section aria-labelledby="apercu-title" className="container-page mt-24 md:mt-36">
+          <h2 id="apercu-title" className="eyebrow">
+            <span className="node" aria-hidden /> Aperçu — écran par écran
+          </h2>
+          <RevealGroup className="mt-10 grid gap-5 md:grid-cols-12 md:gap-8">
+            {media.screens.map((src, i) => (
+              <RevealItem key={src} className={galleryLayout[i % galleryLayout.length]}>
+                <div className="relative aspect-[16/10] overflow-hidden rounded-md border border-line bg-ink-2">
+                  <Image
+                    src={src}
+                    alt={`${project.name} — écran ${i + 1}`}
+                    fill
+                    loading="lazy"
+                    sizes="(min-width: 768px) 58vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </section>
+      )}
+
+      {/* Projet suivant */}
+      <section aria-label="Projet suivant" className="mt-28 border-t border-line md:mt-44">
+        <Link href={`/projets/${next.slug}`} className="group relative block overflow-hidden">
+          <Image
+            src={nextMedia.hero}
+            alt=""
+            fill
+            loading="lazy"
+            sizes="100vw"
+            className="object-cover opacity-25 transition duration-700 ease-[cubic-bezier(.2,0,0,1)] can-hover:group-hover:scale-105 can-hover:group-hover:opacity-45"
+          />
+          <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-ink/20" />
+          <div className="container-page relative flex items-end justify-between gap-6 py-20 md:py-32">
+            <div>
+              <p className="eyebrow">Projet suivant</p>
+              <p className="mt-5 font-display text-display-2xl font-semibold transition-colors duration-300 can-hover:group-hover:text-orange">
+                {next.name}
+              </p>
+            </div>
+            <span
+              aria-hidden
+              className="mb-2 grid h-14 w-14 shrink-0 place-items-center rounded-full border border-line-strong transition duration-300 can-hover:group-hover:border-orange can-hover:group-hover:bg-orange can-hover:group-hover:text-ink md:h-20 md:w-20"
+            >
+              <ArrowUpRight size={26} />
+            </span>
+          </div>
+        </Link>
+      </section>
+    </article>
+  );
 }
