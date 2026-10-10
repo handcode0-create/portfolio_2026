@@ -1,6 +1,7 @@
 "use client";
-import {Menu,ArrowUpRight} from "lucide-react";
+import {Menu,X,ArrowUpRight} from "lucide-react";
 import {useState} from "react";
+import {AnimatePresence,m} from "@/components/Motion";
 const links=[["Projets","#projets"],["À propos","#a-propos"],["Contact","#contact"]];
 export function Navbar(){
  const[open,setOpen]=useState(false);
@@ -8,6 +9,6 @@ export function Navbar(){
  <a href="#" className="flex items-center gap-2 font-bold tracking-tight"><span className="grid h-8 w-8 place-items-center rounded-xl bg-orange text-sm font-black text-black">H</span>HANCODE</a>
  <div className="hidden items-center gap-7 text-sm text-white/65 md:flex">{links.map(([label,href])=><a key={href} href={href} className="transition hover:text-white">{label}</a>)}</div>
  <a href="#contact" className="hidden items-center gap-1 rounded-xl bg-orange px-4 py-2 text-sm font-bold text-black md:flex">Me contacter <ArrowUpRight size={15}/></a>
- <button aria-label="Ouvrir le menu" onClick={()=>setOpen(!open)} className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 md:hidden"><Menu size={19}/></button>
- </nav>{open&&<div className="glass mt-2 rounded-2xl p-2 md:hidden">{links.map(([label,href])=><a key={href} href={href} onClick={()=>setOpen(false)} className="block rounded-xl px-4 py-3 text-sm text-white/75 hover:bg-white/5">{label}</a>)}</div>}</div></header>
+ <button aria-label={open?"Fermer le menu":"Ouvrir le menu"} aria-expanded={open} onClick={()=>setOpen(!open)} className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 md:hidden">{open?<X size={19}/>:<Menu size={19}/>}</button>
+ </nav><AnimatePresence>{open&&<m.div key="mobile-menu" initial={{opacity:0,y:-8,scale:.98}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:-8,scale:.98}} transition={{duration:.2,ease:[0.2,0.75,0.25,1]}} className="glass mt-2 origin-top rounded-2xl p-2 md:hidden">{links.map(([label,href])=><a key={href} href={href} onClick={()=>setOpen(false)} className="block rounded-xl px-4 py-3 text-sm text-white/75 hover:bg-white/5">{label}</a>)}</m.div>}</AnimatePresence></div></header>
 }

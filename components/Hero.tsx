@@ -1,4 +1,5 @@
 import {ArrowDown,ArrowUpRight,Code2,Smartphone,Sparkles} from "lucide-react";
+import {Parallax} from "@/components/Motion";
 export function Hero(){
  return <section className="relative flex min-h-[92svh] items-center overflow-hidden pt-24">
   <div className="absolute inset-0 bg-[url('/portfolio-bg/hero.webp')] bg-cover bg-center opacity-35"/>
@@ -12,12 +13,12 @@ export function Hero(){
     <div className="reveal reveal-delay-4 mt-10 grid max-w-xl grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/10 bg-black/35 backdrop-blur-md">{[["6+","Projets"],["100%","Passion"],["∞","Idées"]].map(([value,label])=><div key={label} className="px-3 py-4 text-center md:px-5"><div className="text-lg font-bold md:text-xl">{value}</div><div className="mt-1 text-[11px] text-white/45">{label}</div></div>)}</div>
    </div>
    <div className="reveal reveal-delay-2 relative mx-auto w-full max-w-[520px]"><div className="float-slow absolute inset-8 rounded-[3rem] bg-orange/10 blur-[70px]"/>
-    <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#0b0b0b]/70 shadow-glow">
+    <Parallax><div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#0b0b0b]/70 shadow-glow">
      <img src="/portfolio-bg/devices.webp" alt="Composition digitale HANCODE" className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-700 hover:scale-105" />
      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/15"/>
      <div className="absolute left-8 top-8 flex items-center gap-2 text-xs text-white/60"><Code2 size={15} className="text-orange"/>DIGITAL PRODUCTS</div>
      <div className="absolute bottom-8 left-8 right-8 rounded-3xl border border-white/10 bg-black/65 p-5 backdrop-blur-xl"><div className="text-xs text-orange">SELECTED WORK</div><div className="mt-2 text-2xl font-bold">Des idées transformées en produits.</div><div className="mt-4 flex items-center gap-2 text-xs text-white/45"><Smartphone size={14}/>Web · Mobile · SaaS</div></div>
-    </div>
+    </div></Parallax>
    </div>
   </div><a href="#projets" className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 items-center gap-2 text-xs text-white/35 md:flex">Explorer <ArrowDown size={14}/></a>
  </section>

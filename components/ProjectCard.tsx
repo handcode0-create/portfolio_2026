@@ -1,11 +1,13 @@
 import type {Project} from "@/data/projects";
+import {getProjectMedia} from "@/lib/project-media";
 import {ArrowUpRight} from "lucide-react";
 export function ProjectCard({project}:{project:Project}){
+ const media=getProjectMedia(project);
  return <a href={"/projets/"+project.slug} className="group block overflow-hidden rounded-3xl border border-white/10 bg-[#101010] transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_24px_80px_rgba(0,0,0,.35)]">
   <div className="relative aspect-[16/10] overflow-hidden bg-[#090909]">
-   <img src={project.image} alt={project.name+" — aperçu visuel"} style={{objectPosition:project.imagePosition||"center"}} className="absolute inset-0 h-full w-full object-cover opacity-75 transition duration-700 group-hover:scale-[1.045] group-hover:opacity-90"/>
-   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"/>
-   <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_40%,rgba(255,106,0,.18),transparent_35%)]"/>
+   <img src={media.hero} alt={project.name+" — aperçu visuel"} loading="lazy" decoding="async" style={{objectPosition:project.imagePosition||"center"}} className={"absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.045] "+(media.hasRealMedia?"opacity-100":"opacity-75 group-hover:opacity-90")}/>
+   <div className={"absolute inset-0 bg-gradient-to-t to-transparent "+(media.hasRealMedia?"from-black/80 via-transparent":"from-black via-black/20")}/>
+   {!media.hasRealMedia&&<div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_40%,rgba(255,106,0,.18),transparent_35%)]"/>}
    <span className="absolute right-4 top-4 rounded-full border border-white/10 bg-black/55 px-3 py-1 text-[11px] text-white/70 backdrop-blur">{project.status}</span>
    <span className="absolute bottom-4 left-4 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[11px] text-white/55 backdrop-blur">Voir le projet</span>
   </div>
