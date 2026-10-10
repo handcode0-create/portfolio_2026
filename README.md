@@ -43,7 +43,8 @@ data/projects.ts           # liste des projets (source unique)
 lib/project-media.ts       # détection des captures réelles
 public/
   projects/<slug>/         # captures réelles de chaque projet
-  portfolio-bg/            # visuels d'ambiance (placeholders)
+  portfolio-bg/            # fonds du site (hero, devices, workspace)
+  about/me.webp            # photo de la section « Qui suis-je ? »
 ```
 
 ## Ajouter ou modifier un projet
