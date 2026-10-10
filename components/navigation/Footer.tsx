@@ -54,7 +54,7 @@ export function Footer() {
       </div>
 
       <div className="container-page flex flex-col gap-4 border-t border-line py-6 text-sm text-paper-faint sm:flex-row sm:items-center sm:justify-between">
-        <span>© 2026 HANCODE STUDIO — {site.owner.name}, {site.owner.role}.</span>
+        <span>© 2026 handCode Studio — {site.owner.name}.</span>
         <a href="#main" className="u-link inline-flex items-center gap-2 self-start text-paper-dim hover:text-paper sm:self-auto">
           Retour en haut <ArrowUp size={14} aria-hidden />
         </a>
