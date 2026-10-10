@@ -12,6 +12,7 @@ const body = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "sw
 export const viewport: Viewport = { themeColor: "#0B0B0B", colorScheme: "dark" };
 
 export const metadata: Metadata = {
+  authors: [{ name: site.owner.name }],
   metadataBase: new URL(site.url),
   title: { default: site.title, template: "%s · HANCODE" },
   description: site.description,

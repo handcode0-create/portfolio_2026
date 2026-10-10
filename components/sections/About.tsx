@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { AboutMotion } from "@/components/sections/AboutMotion";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Motion";
-import { approach, stackGroups } from "@/data/site";
+import { approach, site, stackGroups } from "@/data/site";
 
 /** 03 — STORY. Portrait en masque, positionnement, approche et stack réelle. */
 export function About() {
@@ -13,13 +13,17 @@ export function About() {
             <div data-portrait-img className="absolute inset-0 will-change-transform">
               <Image
                 src="/about/me.webp"
-                alt="Portrait de Smith, fondateur de HANCODE"
+                alt={`Portrait de ${site.owner.name}, ${site.owner.role}`}
                 fill
                 sizes="(min-width: 768px) 40vw, 100vw"
                 className="object-cover"
               />
             </div>
-            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent" />
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
+            <p className="absolute inset-x-5 bottom-5 font-display text-sm text-paper">
+              <span className="block text-lg font-semibold">{site.owner.name}</span>
+              <span className="text-micro uppercase text-paper-dim">{site.owner.role}</span>
+            </p>
           </div>
         </AboutMotion>
 
