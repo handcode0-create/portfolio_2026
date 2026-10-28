@@ -1,13 +1,21 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
-import { MotionProvider, ScrollProgress } from "@/components/Motion";
-import { Navbar } from "@/components/navigation/Navbar";
-import { Footer } from "@/components/navigation/Footer";
+import { MotionProvider } from "@/components/Motion";
 import { site } from "@/data/site";
 
 const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display", display: "swap" });
 const body = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
+// Police unique de la bande « L'Enregistreur » (accueil)
+// Auto-hébergée (variable 100–800, sous-ensemble latin) : aucune requête vers Google.
+const mono = localFont({
+  src: "../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2",
+  variable: "--font-mono",
+  weight: "100 800",
+  display: "swap",
+  fallback: ["ui-monospace", "Menlo", "Consolas", "monospace"],
+});
 
 export const viewport: Viewport = { themeColor: "#0B0B0B", colorScheme: "dark" };
 
@@ -34,7 +42,7 @@ const bootScript =
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
+    <html lang="fr" className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
@@ -42,12 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a className="skip-link" href="#main">
           Aller au contenu
         </a>
-        <MotionProvider>
-          <ScrollProgress />
-          <Navbar />
-          <main id="main">{children}</main>
-          <Footer />
-        </MotionProvider>
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

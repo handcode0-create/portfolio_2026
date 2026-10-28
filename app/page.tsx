@@ -1,19 +1,15 @@
-import { About } from "@/components/sections/About";
-import { Contact } from "@/components/sections/Contact";
-import { Hero } from "@/components/sections/Hero";
-import { Manifesto } from "@/components/sections/Manifesto";
-import { Marquee } from "@/components/sections/Marquee";
-import { Projects } from "@/components/sections/Projects";
+import type { Viewport } from "next";
+import "./recorder.css";
+import { RecorderEngine } from "@/components/recorder/RecorderEngine";
+import { Tape } from "@/components/recorder/Tape";
 
+export const viewport: Viewport = { themeColor: "#0B0B0B", colorScheme: "light" };
+
+/** Accueil : « L'Enregistreur » — la bande de papier. */
 export default function HomePage() {
   return (
-    <>
-      <Hero />
-      <Marquee />
-      <Manifesto />
-      <Projects />
-      <About />
-      <Contact />
-    </>
+    <RecorderEngine>
+      <Tape />
+    </RecorderEngine>
   );
 }
