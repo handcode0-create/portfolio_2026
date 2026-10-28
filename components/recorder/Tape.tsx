@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { approach, hero, manifesto, site } from "@/data/site";
 import { projects } from "@/data/projects";
+import { ContactForm } from "./ContactForm";
 
 /**
  * Contenu imprimé sur la bande. Composant serveur : tout est lisible et indexable sans JS.
@@ -118,6 +119,8 @@ export function Tape() {
           <span aria-hidden>■</span>
         </p>
         <h2 id="tfin" className="tp-h2">On enregistre le vôtre ?</h2>
+        <ContactForm />
+        <p className="tp-form-note">Ou directement :</p>
         <div className="tp-actions">
           <a href={site.contact.emailHref} className="tp-btn tp-btn--rec">
             <span aria-hidden className="tp-rec-dot" /> {site.contact.email}

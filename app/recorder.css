@@ -329,6 +329,32 @@ html:has(.rc) ::selection {
 .tp-rec-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pen); }
 .tp-btn--rec:hover .tp-rec-dot { background: var(--ink); }
 
+/* Formulaire de contact (fin de bande) */
+.tp-form { display: flex; flex-direction: column; gap: 14px; max-width: 640px; }
+.tp-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.tp-field { display: flex; flex-direction: column; gap: 6px; }
+.tp-field-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+.tp-input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+}
+.tp-input:focus { outline: 2px solid var(--pen); outline-offset: 0; }
+.tp-textarea { resize: vertical; min-height: 96px; }
+.tp-hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.tp-form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.tp-btn:disabled { opacity: 0.6; cursor: progress; }
+.tp-form-note { margin: 0; font-size: 13px; color: var(--ink-2); }
+.tp-form-error { color: #b42318; font-weight: 700; }
+.tp-form-done { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; max-width: 640px; }
+.tp-form-done-title { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 20px; font-weight: 700; }
+
 /* --- Mise en page horizontale des prises -------------------------------- */
 @media (min-width: 900px) and (min-aspect-ratio: 1/1) and (prefers-reduced-motion: no-preference) {
   .js .tp-take {
@@ -347,11 +373,12 @@ html:has(.rc) ::selection {
   .js .tp-channels li { padding: 1.2vh 0; }
   .js .tp-take--index { width: 46vw; justify-content: flex-start; }
   .js .tp-index-link { padding: 1.25vh 0; }
-  .js .tp-take--end { width: 82vw; justify-content: center; padding-right: 44vw; }
+  .js .tp-take--end { width: 92vw; justify-content: center; padding-right: 44vw; gap: 2.2vh; }
 }
 
 @media (max-width: 899px) {
   .rc-hide-sm { display: none !important; }
+  .tp-form-row { grid-template-columns: 1fr; }
   .tp-channels li { grid-template-columns: 48px 1fr; }
   .tp-channels li > span:last-child { grid-column: 2; }
   .tp-index-link { grid-template-columns: 32px 1fr 16px; }
