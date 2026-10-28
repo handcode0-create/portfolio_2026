@@ -19,6 +19,7 @@ Chaque projet a sa carte sur l'accueil et sa page détaillée (`/projets/<slug>`
 | Style | Tailwind CSS 3, polices DM Sans et Space Grotesk |
 | Animations | GSAP + ScrollTrigger (`gsap`, `@gsap/react`), Motion for React (`motion`, via `LazyMotion`) |
 | Icônes | Lucide React |
+| Backend | [ServerPatterns](https://serverpatterns.vercel.app) (`@serverpatterns/core`, `@serverpatterns/next`), Zod, Supabase (API REST) |
 
 ## Démarrer
 
@@ -99,6 +100,30 @@ Un seul propriétaire d'animation par propriété :
 Accessibilité et performance : `prefers-reduced-motion` supprime les mouvements (contenu final affiché directement), contenu lisible sans JS, interactions souris limitées aux appareils `hover: hover`, focus clavier visible, lien d'évitement, animation de `transform`/`opacity` uniquement.
 
 Le contenu d'accueil est rendu côté serveur ; seuls les îlots d'animation sont des composants client.
+
+## Formulaire de contact (backend ServerPatterns + Supabase)
+
+Le formulaire de la fin de bande (`components/recorder/ContactForm.tsx`) appelle une Server Action ; les messages sont enregistrés dans la table Supabase `contact_messages`.
+
+| Fichier | Rôle |
+| --- | --- |
+| `lib/actions/send-contact-message.ts` | Server Action générée par `serverpatterns add action`, puis complétée : validation Zod, champ piège anti-robot, limite de 3 messages / 10 min par IP |
+| `lib/services/contact-messages.ts` | Insertion dans Supabase, renvoie un `Result` ; les détails techniques restent dans les logs |
+| `lib/api/supabase.ts` | Client `createApiClient` vers l'API REST de Supabase (pas de SDK) |
+| `supabase/migrations/…_contact_messages.sql` | Table + RLS activé sans policy |
+
+Mise en place :
+
+1. Créer un projet sur [supabase.com](https://supabase.com), puis dans **SQL Editor** exécuter le fichier `supabase/migrations/20261028000000_contact_messages.sql`.
+2. Copier `.env.example` en `.env.local` et renseigner `SUPABASE_URL` et `SUPABASE_SECRET_KEY` (Project Settings > API Keys : clé secrète `sb_secret_…`, ou l'ancienne clé `service_role`).
+3. Sur Vercel : ajouter les deux mêmes variables (Settings > Environment Variables), puis redéployer.
+
+Les messages se lisent dans Supabase, **Table Editor > contact_messages**.
+
+Limites connues :
+- La limite par IP est en mémoire : chaque instance serverless a son propre compteur. C'est un frein contre le spam, pas une protection stricte (pour ça, brancher un store Upstash sur `createRateLimiter`).
+- Pas de notification email à la réception d'un message pour l'instant.
+- Les packages ServerPatterns ne sont pas encore sur npm : ils sont installés depuis `vendor/*.tgz`. Une fois publiés, remplacer les chemins `file:vendor/…` du `package.json` par des versions.
 
 ## Qualité
 

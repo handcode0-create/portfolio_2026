@@ -11,15 +11,19 @@
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@gsap/react": "^2.1.2",
+    "@serverpatterns/core": "file:vendor/serverpatterns-core-0.1.0.tgz",
+    "@serverpatterns/next": "file:vendor/serverpatterns-next-0.1.0.tgz",
     "gsap": "^3.15.0",
     "lucide-react": "^0.468.0",
     "motion": "^14.1.0",
     "next": "^15.5.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.7",
+    "@serverpatterns/cli": "file:vendor/serverpatterns-cli-0.1.0.tgz",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
